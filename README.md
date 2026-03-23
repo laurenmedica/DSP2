@@ -1,6 +1,6 @@
-# NBA Upset Prediction Model  
+# NBA Upset Prediction Model
 
-Compare whether NBA game upsets are better predicted using recent performance (last 10 games) or full historical data using gradient boosting models and engineered features.  
+> Compare whether NBA game upsets are better predicted using recent performance (last 10 games) or full historical data using gradient boosting models and engineered features.
 
 **Course:** DS 4002  
 **Group Name:** DLC  
@@ -9,34 +9,37 @@ Compare whether NBA game upsets are better predicted using recent performance (l
 
 ---
 
-## Overview  
+## Overview
 
-This project builds and compares two machine learning models to predict whether an NBA game will result in an upset (when the underdog wins):  
+This project compares two machine learning approaches:
 
-- Recent-10 games performance  
-- Full historical performance  
+- Recent-10 games performance
+- Full historical performance
 
-Both models use engineered features based on team performance, Elo ratings, and game context.  
+We evaluate performance primarily using **F1 score**.
 
-We evaluate performance primarily using **F1 score**, with threshold tuning to account for class imbalance.  
-
-**Key Idea:**  
-Rather than using a fixed threshold, we optimize the classification threshold using precision-recall curves to maximize F1 score.  
+**Key Result:**  
+The recent-performance and full-history models capture different aspects of team behavior, highlighting the tradeoff between short-term momentum and long-term trends.
 
 ---
 
-## Installation  
+## Installation
 
-Clone the repository:  
+Clone the repository:
 
-```bash
+
 git clone <your-repo-link>
 cd <repo-name>
+
+
+Install required packages:
+
 
 pip install -r requirements.txt
 
 
 ---
+
 ## Software & Platform
 
 **Language:** Python 3  
@@ -53,23 +56,28 @@ pip install -r requirements.txt
 ## Repository Structure
 
 
-
 PROJECT_ROOT/
 │
 ├── README.md
 ├── requirements.txt
 │
 ├── DATA/
-│   └── nbaallelo.csv
+│ └── nbaallelo.csv
 │
 ├── SCRIPTS/
-│   ├── 01_load_clean.py
-│   ├── 02_feature_engineering.py
-│   ├── 03_model_recent10.py
-│   ├── 04_model_full_history.py
-│   └── 05_comparison.py
+│ ├── 01_load_clean.py
+│ ├── 02_feature_engineering.py
+│ ├── 03_model_recent10.py
+│ ├── 04_model_full_history.py
+│ └── 05_model_comparison.py
+│
+├── OUTPUT/
+│ └── model_results.csv
 │
 └── P2Project.ipynb
+
+
+---
 
 ## Reproducing Results
 
@@ -108,17 +116,21 @@ python SCRIPTS/01_load_clean.py
 python SCRIPTS/02_feature_engineering.py
 python SCRIPTS/03_model_recent10.py
 python SCRIPTS/04_model_full_history.py
-python SCRIPTS/05_comparison.py
+python SCRIPTS/05_model_comparison.py
 
 
 ---
 
 ### Step 4 — View Output
 
-Results will appear in the notebook or output files.
+Results will appear in:
+
+
+OUTPUT/
+
 
 Including:
-- F1 score
+- F1 scores
 - Precision / Recall
 - Model comparisons
 
@@ -136,18 +148,18 @@ Including:
 
 ## Results
 
-| Model | Description |
+| Model | F1 Score |
 |-------|----------|
-| Recent-10 Model | Short-term performance |
-| Full History Model | Long-term performance |
+| Recent-10 Model | .468 |
+| Full History Model | .469 |
 
 ---
 
 ## Notes
 
-- The same chronological split is used for both models
-- A key design decision was whether to prioritize recent vs long-term performance
-- Recent data captures momentum, while full history provides stability
+- The same train/test split is used for both models.
+- A key design decision was whether to prioritize recent vs long-term performance.
+- Recent data captures momentum, while full history provides stability.
 
 ---
 
