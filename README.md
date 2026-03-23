@@ -1,34 +1,42 @@
-NBA Upset Prediction Model
+# NBA Upset Prediction Model  
 
-Compare whether NBA game upsets are better predicted using recent performance (last 10 games) or full historical data, using gradient boosting models and engineered features.
+Compare whether NBA game upsets are better predicted using recent performance (last 10 games) or full historical data using gradient boosting models and engineered features.  
 
-Course: DS 4002
-Group Name: DLC
-Group Leader: Caroline Lingle
-Group Members: Lauren Medica, Dev Patel, Caroline Lingle
+**Course:** DS 4002  
+**Group Name:** DLC  
+**Group Leader:** Caroline Lingle  
+**Group Members:** Lauren Medica, Dev Patel, Caroline Lingle  
 
-Overview
+---
 
-This project builds and compares two machine learning models to predict whether an NBA game will result in an upset (when the underdog wins):
+## Overview  
 
-Model A: Recent-10 games performance
-Model B: Full historical performance
+This project builds and compares two machine learning models to predict whether an NBA game will result in an upset (when the underdog wins):  
 
-Both models use engineered features based on team performance, Elo ratings, and game context.
+- Recent-10 games performance  
+- Full historical performance  
 
-Performance is evaluated using F1 score, with threshold tuning to handle class imbalance.
+Both models use engineered features based on team performance, Elo ratings, and game context.  
 
-Key Idea
+We evaluate performance primarily using **F1 score**, with threshold tuning to account for class imbalance.  
 
-Rather than using a fixed 0.5 classification threshold, we optimize the threshold using precision-recall curves to maximize F1 score for upset prediction.
+**Key Idea:**  
+Rather than using a fixed threshold, we optimize the classification threshold using precision-recall curves to maximize F1 score.  
 
-Installation
-Clone the repository
+---
+
+## Installation  
+
+Clone the repository:  
+
+```bash
 git clone <your-repo-link>
 cd <repo-name>
-Install dependencies
+
 pip install -r requirements.txt
+
 Software & Platform
+
 Language: Python 3
 
 Libraries Used:
@@ -38,7 +46,7 @@ numpy
 scikit-learn
 matplotlib
 seaborn
-Repository Structure
+
 PROJECT_ROOT/
 │
 ├── README.md
@@ -55,6 +63,7 @@ PROJECT_ROOT/
 │   └── 05_comparison.py
 │
 └── P2Project.ipynb
+
 Reproducing Results
 Step 1 — Download Data
 
@@ -63,26 +72,26 @@ https://github.com/fivethirtyeight/data/blob/master/nba-elo/nbaallelo.csv
 
 Place file in:
 
-DATA/
+DATA/  
 
 Required file:
 
 nbaallelo.csv
 Step 2 — Install Dependencies
-pip install -r requirements.txt
+pip install -r requirements.txt  
 Step 3 — Run Notebook or Scripts
 
 Run the notebook:
 
-P2Project.ipynb
+P2Project.ipynb  
 
-OR execute scripts (if separated):
+OR execute scripts:
 
-python SCRIPTS/01_load_clean.py
-python SCRIPTS/02_feature_engineering.py
-python SCRIPTS/03_model_recent10.py
-python SCRIPTS/04_model_full_history.py
-python SCRIPTS/05_comparison.py
+python SCRIPTS/01_load_clean.py  
+python SCRIPTS/02_feature_engineering.py  
+python SCRIPTS/03_model_recent10.py  
+python SCRIPTS/04_model_full_history.py  
+python SCRIPTS/05_comparison.py  
 Modeling Approach
 Data Preparation
 Chronologically sorted game data
@@ -109,7 +118,9 @@ HistGradientBoostingClassifier (sklearn)
 Evaluation Strategy
 Predicted probabilities → threshold tuning
 Selected threshold that maximizes F1 score
+
 Metrics:
+
 F1 Score (primary)
 Precision
 Recall
@@ -119,17 +130,19 @@ Recent-10 Model	Short-term team performance
 Full History Model	Long-term performance trends
 
 Main Insight:
-Recent performance captures short-term momentum, while full history provides more stable trends. The comparison shows how predictive power changes depending on time horizon.
+Recent performance captures short-term momentum, while full history provides more stable trends.
 
 Notes
 Chronological split is critical for realistic sports prediction
 Upsets are relatively rare → class imbalance handled with threshold tuning
 Rolling features help capture momentum and recent form
 Future Work
-Try Random Forest and Logistic Regression models
+Try Random Forest and Logistic Regression
 Incorporate player-level data
-Add betting odds as features
-Use time-series or sequence models (LSTM)
-Evaluate model performance by season
+Add betting odds
+Use time-series models (LSTM)
+Evaluate performance by season
 Acknowledgements
 Dataset: FiveThirtyEight NBA Elo dataset (GitHub)
+Instructor: Karsten Siller
+TA: Cole Whittington
