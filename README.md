@@ -1,11 +1,135 @@
-# DS4002 Data Science Projects - Template
+NBA Upset Prediction Model
 
-This repository serves as a template for DS4002 student research project repositories. When creating your project repository, you may use this template to establish the required folder structure.
+Compare whether NBA game upsets are better predicted using recent performance (last 10 games) or full historical data, using gradient boosting models and engineered features.
 
-Once your repository is created, replace this README.md file with your project-specific README, following the specifications provided on Canvas.
+Course: DS 4002
+Group Name: DLC
+Group Leader: Caroline Lingle
+Group Members: Lauren Medica, Dev Patel, Caroline Lingle
 
-The purpose and expected contents of the scripts, output, and data folders are described in the MI3 rubric (available on Canvas).
+Overview
 
-Remember to include a LICENSE.md file in your repository.
+This project builds and compares two machine learning models to predict whether an NBA game will result in an upset (when the underdog wins):
 
-**Before submitting, review your repository to ensure its organization and contents meet the project specifications. You will submit the URL of your repository on Canvas.**
+Model A: Recent-10 games performance
+Model B: Full historical performance
+
+Both models use engineered features based on team performance, Elo ratings, and game context.
+
+Performance is evaluated using F1 score, with threshold tuning to handle class imbalance.
+
+Key Idea
+
+Rather than using a fixed 0.5 classification threshold, we optimize the threshold using precision-recall curves to maximize F1 score for upset prediction.
+
+Installation
+Clone the repository
+git clone <your-repo-link>
+cd <repo-name>
+Install dependencies
+pip install -r requirements.txt
+Software & Platform
+Language: Python 3
+
+Libraries Used:
+
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+Repository Structure
+PROJECT_ROOT/
+│
+├── README.md
+├── requirements.txt
+│
+├── DATA/
+│   └── nbaallelo.csv
+│
+├── SCRIPTS/
+│   ├── 01_load_clean.py
+│   ├── 02_feature_engineering.py
+│   ├── 03_model_recent10.py
+│   ├── 04_model_full_history.py
+│   └── 05_comparison.py
+│
+└── P2Project.ipynb
+Reproducing Results
+Step 1 — Download Data
+
+Download the dataset:
+https://github.com/fivethirtyeight/data/blob/master/nba-elo/nbaallelo.csv
+
+Place file in:
+
+DATA/
+
+Required file:
+
+nbaallelo.csv
+Step 2 — Install Dependencies
+pip install -r requirements.txt
+Step 3 — Run Notebook or Scripts
+
+Run the notebook:
+
+P2Project.ipynb
+
+OR execute scripts (if separated):
+
+python SCRIPTS/01_load_clean.py
+python SCRIPTS/02_feature_engineering.py
+python SCRIPTS/03_model_recent10.py
+python SCRIPTS/04_model_full_history.py
+python SCRIPTS/05_comparison.py
+Modeling Approach
+Data Preparation
+Chronologically sorted game data
+Removed unnecessary columns
+Created binary target: upset
+Feature Engineering
+
+Key features include:
+
+Elo rating (elo_i, opp_elo_i, elo_gap)
+Game context (home, neutral, playoffs)
+Season progression (seasongame)
+Rolling performance metrics (win rates, stats)
+
+Two feature sets:
+
+Recent-10 model: rolling averages over last 10 games
+Full-history model: cumulative/long-term performance
+Train-Test Split
+Chronological 80/20 split
+Prevents data leakage from future games
+Models Used
+HistGradientBoostingClassifier (sklearn)
+Evaluation Strategy
+Predicted probabilities → threshold tuning
+Selected threshold that maximizes F1 score
+Metrics:
+F1 Score (primary)
+Precision
+Recall
+Results
+Model	Description
+Recent-10 Model	Short-term team performance
+Full History Model	Long-term performance trends
+
+Main Insight:
+Recent performance captures short-term momentum, while full history provides more stable trends. The comparison shows how predictive power changes depending on time horizon.
+
+Notes
+Chronological split is critical for realistic sports prediction
+Upsets are relatively rare → class imbalance handled with threshold tuning
+Rolling features help capture momentum and recent form
+Future Work
+Try Random Forest and Logistic Regression models
+Incorporate player-level data
+Add betting odds as features
+Use time-series or sequence models (LSTM)
+Evaluate model performance by season
+Acknowledgements
+Dataset: FiveThirtyEight NBA Elo dataset (GitHub)
