@@ -1,6 +1,6 @@
 # NBA Upset Prediction Model
 
-> Compare whether NBA game upsets are better predicted using recent performance (last 10 games) or full historical data using gradient boosting models and engineered features.
+Compare whether NBA game upsets are better predicted using recent performance (last 10 games) or full historical data using gradient boosting models and engineered features.
 
 **Course:** DS 4002  
 **Group Name:** DLC  
@@ -13,30 +13,17 @@
 
 This project compares two machine learning approaches:
 
-- Recent-10 games performance
-- Full historical performance
+- Recent-10 games performance  
+- Full historical performance  
 
-We evaluate performance primarily using **F1 score**.
+The goal is to predict **NBA game upsets**, defined as games where a team with a win probability ≤ 0.40 wins.
+
+We evaluate performance using both **F1 score** and **ROC-AUC**.
+
+Because upsets are relatively rare events, F1 score alone does not fully capture model performance. We initially used F1 score, but incorporated **ROC-AUC as a primary metric** since it better measures how well the model distinguishes between upset and non-upset games across all thresholds. We also evaluate **average precision (AP)** and use a **precision-recall curve to select an optimal classification threshold**, rather than relying on a fixed cutoff like 0.5.
 
 **Key Result:**  
-The recent-performance and full-history models capture different aspects of team behavior, highlighting the tradeoff between short-term momentum and long-term trends.
-
----
-
-## Installation
-
-Clone the repository:
-
-
-git clone <your-repo-link>
-cd <repo-name>
-
-
-Install required packages:
-
-
-pip install -r requirements.txt
-
+Both models perform similarly, but the full-history model slightly outperforms in ROC-AUC, suggesting stronger overall ranking ability, while the recent-performance model better captures short-term trends.
 
 ---
 
@@ -45,11 +32,12 @@ pip install -r requirements.txt
 **Language:** Python 3  
 
 **Libraries Used:**
-- pandas
-- numpy
-- scikit-learn
-- matplotlib
-- seaborn
+
+- pandas  
+- numpy  
+- scikit-learn  
+- matplotlib  
+- seaborn  
 
 ---
 
@@ -61,20 +49,19 @@ PROJECT_ROOT/
 ├── README.md
 ├── requirements.txt
 │
-├── DATA/
+├── data/
 │ └── nbaallelo.csv
 │
-├── SCRIPTS/
-│ ├── 01_load_clean.py
-│ ├── 02_feature_engineering.py
-│ ├── 03_model_recent10.py
-│ ├── 04_model_full_history.py
-│ └── 05_model_comparison.py
+├── scripts/
+│ ├── P2Project.ipynb
+│ └── P2EDATake2.ipynb
 │
-├── OUTPUT/
-│ └── model_results.csv
+├── output/
+│ └── summary_results.csv
+│ └── *.pdf (plots)
 │
-└── P2Project.ipynb
+├── LICENSE.md
+└── .gitignore
 
 
 ---
@@ -83,97 +70,107 @@ PROJECT_ROOT/
 
 ### Step 1 — Download Data
 
-Download dataset from GitHub:
+Download dataset from GitHub:  
+https://github.com/fivethirtyeight/data/blob/master/nba-elo/nbaallelo.csv  
 
-https://github.com/fivethirtyeight/data/blob/master/nba-elo/nbaallelo.csv
-
-Place the following file into:
-
-
-DATA/
+Place the file into:
 
 
-- nbaallelo.csv
-
----
-
-### Step 2 — Install Dependencies
-
-From the project root directory, run:
-
-
-pip install -r requirements.txt
+data/nbaallelo.csv
 
 
 ---
 
-### Step 3 — Run Scripts (in order)
+### Step 2 — Run Code
 
-From the project root directory, execute:
-
-
-python SCRIPTS/01_load_clean.py
-python SCRIPTS/02_feature_engineering.py
-python SCRIPTS/03_model_recent10.py
-python SCRIPTS/04_model_full_history.py
-python SCRIPTS/05_model_comparison.py
+All analysis is contained in the notebook:
 
 
+scripts/P2Project.ipynb
+
+
+Open the notebook and run all cells sequentially to reproduce results.
 ---
 
-### Step 4 — View Output
+### Step 3 — View Output
 
 Results will appear in:
 
 
-OUTPUT/
+output/
 
 
 Including:
-- F1 scores
-- Precision / Recall
-- Model comparisons
+
+- Model comparison table (`summary_results.csv`)  
+- Precision-recall curves  
+- Model comparison bar charts  
+- Feature importance plots  
 
 ---
 
 ## Modeling Approach
 
-- Feature engineering using Elo ratings and game context
-- Rolling averages for recent performance
-- 80/20 chronological train-test split
-- Gradient boosting classifier
-- Primary evaluation metric: **F1 score**
+- Data cleaning and chronological sorting of NBA game data  
+- Creation of an **upset label** based on forecast probability and game outcome  
+- Feature engineering using:
+  - Elo ratings and Elo differences  
+  - Game location (home/away/neutral)  
+  - Rolling averages (last 10 games)  
+  - Expanding averages (full history)  
+  - Win streaks  
+  - Elo momentum (short-term vs long-term trends)  
+  - Underdog-related features (underdog margin, upset pressure, upset zone)  
+  - Variability and consistency measures  
+
+- Two model setups:
+  - **Model A (Recent-10):** uses rolling 10-game features  
+  - **Model B (Full History):** uses expanding full-history features  
+
+- Chronological 80/20 train-test split to prevent data leakage  
+
+- Model:
+  - **HistGradientBoostingClassifier** (scikit-learn)  
+  - Class-balanced to account for rare upset events  
+
+- Evaluation:
+  - ROC-AUC (primary metric)  
+  - F1 score (secondary)  
+  - Average Precision (AP)  
+  - Precision-recall curve with optimized threshold  
 
 ---
 
 ## Results
 
-| Model | F1 Score |
-|-------|----------|
-| Recent-10 Model | .468 |
-| Full History Model | .469 |
+| Model              | F1 Score | ROC-AUC |
+|--------------------|---------|--------|
+| Recent-10 Model    | 0.468   | 0.73   |
+| Full History Model | 0.469   | 0.74   |
 
 ---
 
 ## Notes
 
-- The same train/test split is used for both models.
-- A key design decision was whether to prioritize recent vs long-term performance.
-- Recent data captures momentum, while full history provides stability.
+- The same train/test split is used for both models.  
+- Upsets are rare, which creates class imbalance in the dataset.  
+- ROC-AUC is emphasized because it better evaluates model performance on rare-event classification.  
+- Threshold tuning using precision-recall curves improves upset detection compared to a fixed threshold.  
+- Recent performance captures short-term momentum, while full historical data provides more stable trends.  
 
 ---
 
 ## Future Work
 
-- Logistic Regression comparison
-- Random Forest model
-- Player-level analysis
-- Betting odds integration
+- Compare with Logistic Regression and Random Forest baselines  
+- Incorporate player-level or injury data  
+- Add betting odds or external features  
+- Further tune model hyperparameters  
 
 ---
 
 ## Acknowledgements
 
-Dataset: FiveThirtyEight NBA Elo dataset (GitHub)  
-Instructor: Karsten Siller  
-TA: Cole Whittington  
+- Dataset: FiveThirtyEight NBA Elo dataset (GitHub)  
+- Instructor: Karsten Siller  
+- TA: Cole Whittington   
