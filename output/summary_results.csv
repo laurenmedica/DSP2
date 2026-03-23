@@ -1,0 +1,3 @@
+Model,Feature window,Upset F1,Best possible F1,ROC-AUC,Threshold
+Model A — Recent-10 Games,Last 10 games,0.468,0.468,0.8935,0.749
+Model B — Full History,All prior games,0.469,0.469,0.8935,0.753
