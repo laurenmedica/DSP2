@@ -64,85 +64,97 @@ PROJECT_ROOT/
 │
 └── P2Project.ipynb
 
-Reproducing Results
-Step 1 — Download Data
+## Reproducing Results
 
-Download the dataset:
+### Step 1 — Download Data
+
+Download dataset from GitHub:
+
 https://github.com/fivethirtyeight/data/blob/master/nba-elo/nbaallelo.csv
 
-Place file in:
+Place the following file into:
 
-DATA/  
 
-Required file:
+DATA/
 
-nbaallelo.csv
-Step 2 — Install Dependencies
-pip install -r requirements.txt  
-Step 3 — Run Notebook or Scripts
 
-Run the notebook:
+- nbaallelo.csv
 
-P2Project.ipynb  
+---
 
-OR execute scripts:
+### Step 2 — Install Dependencies
 
-python SCRIPTS/01_load_clean.py  
-python SCRIPTS/02_feature_engineering.py  
-python SCRIPTS/03_model_recent10.py  
-python SCRIPTS/04_model_full_history.py  
-python SCRIPTS/05_comparison.py  
-Modeling Approach
-Data Preparation
-Chronologically sorted game data
-Removed unnecessary columns
-Created binary target: upset
-Feature Engineering
+From the project root directory, run:
 
-Key features include:
 
-Elo rating (elo_i, opp_elo_i, elo_gap)
-Game context (home, neutral, playoffs)
-Season progression (seasongame)
-Rolling performance metrics (win rates, stats)
+pip install -r requirements.txt
 
-Two feature sets:
 
-Recent-10 model: rolling averages over last 10 games
-Full-history model: cumulative/long-term performance
-Train-Test Split
-Chronological 80/20 split
-Prevents data leakage from future games
-Models Used
-HistGradientBoostingClassifier (sklearn)
-Evaluation Strategy
-Predicted probabilities → threshold tuning
-Selected threshold that maximizes F1 score
+---
 
-Metrics:
+### Step 3 — Run Scripts (in order)
 
-F1 Score (primary)
-Precision
-Recall
-Results
-Model	Description
-Recent-10 Model	Short-term team performance
-Full History Model	Long-term performance trends
+From the project root directory, execute:
 
-Main Insight:
-Recent performance captures short-term momentum, while full history provides more stable trends.
 
-Notes
-Chronological split is critical for realistic sports prediction
-Upsets are relatively rare → class imbalance handled with threshold tuning
-Rolling features help capture momentum and recent form
-Future Work
-Try Random Forest and Logistic Regression
-Incorporate player-level data
-Add betting odds
-Use time-series models (LSTM)
-Evaluate performance by season
-Acknowledgements
-Dataset: FiveThirtyEight NBA Elo dataset (GitHub)
-Instructor: Karsten Siller
-TA: Cole Whittington
+python SCRIPTS/01_load_clean.py
+python SCRIPTS/02_feature_engineering.py
+python SCRIPTS/03_model_recent10.py
+python SCRIPTS/04_model_full_history.py
+python SCRIPTS/05_comparison.py
+
+
+---
+
+### Step 4 — View Output
+
+Results will appear in the notebook or output files.
+
+Including:
+- F1 score
+- Precision / Recall
+- Model comparisons
+
+---
+
+## Modeling Approach
+
+- Feature engineering using Elo ratings and game context
+- Rolling averages for recent performance
+- 80/20 chronological train-test split
+- Gradient boosting classifier
+- Primary evaluation metric: **F1 score**
+
+---
+
+## Results
+
+| Model | Description |
+|-------|----------|
+| Recent-10 Model | Short-term performance |
+| Full History Model | Long-term performance |
+
+---
+
+## Notes
+
+- The same chronological split is used for both models
+- A key design decision was whether to prioritize recent vs long-term performance
+- Recent data captures momentum, while full history provides stability
+
+---
+
+## Future Work
+
+- Logistic Regression comparison
+- Random Forest model
+- Player-level analysis
+- Betting odds integration
+
+---
+
+## Acknowledgements
+
+Dataset: FiveThirtyEight NBA Elo dataset (GitHub)  
+Instructor: Karsten Siller  
+TA: Cole Whittington  
