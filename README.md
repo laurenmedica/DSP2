@@ -35,17 +35,19 @@ cd <repo-name>
 
 pip install -r requirements.txt
 
-Software & Platform
+## Software & Platform
 
-Language: Python 3
+**Language:** Python 3  
 
-Libraries Used:
+**Libraries Used:**
 
 pandas
 numpy
 scikit-learn
 matplotlib
 seaborn
+
+## Repository Structure
 
 PROJECT_ROOT/
 │
